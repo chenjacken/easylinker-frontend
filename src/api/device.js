@@ -96,3 +96,14 @@ export function queryDeviceStatus () {
     method: 'get'
   })
 }
+
+/**
+ * @description 根据设备类型获取支持的协议类型
+ * @param { string } type 设备类型
+ */
+export function queryProtocolByType (type) {
+  return axios({
+    url: `easyboot/sysParam/getProtocolByType?deviceType=${type}`,
+    method: 'get'
+  })
+}
