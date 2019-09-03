@@ -1,7 +1,10 @@
 <template>
   <div class="page-header-index-wide page-header-wrapper-grid-content-main">
     <a-row :gutter="24">
-      <a-col :md="24" :lg="24">
+      <a-col
+        :md="24"
+        :lg="24"
+      >
         <a-card :bordered="false">
           <div class="account-center-avatarHolder">
             <div class="avatar">
@@ -11,26 +14,40 @@
           </div>
           <div class="account-center-detail">
             <p>
-              <i class="title"></i>{{ userDetail.name }}
+              <a-icon type="user"></a-icon>{{ userDetail.name }}
+            </p>
+            <p class="roles">
+              <a-icon type="tag" />
+              <a-tag
+                v-for="(role, index) in userDetail.roles"
+                :key="index"
+                :color="tagColors[index]"
+              >{{ role }}</a-tag>
             </p>
             <p>
-              <i class="group"></i>{{ userDetail.roles }}
-            </p>
-            <p>
-              <i class="email"></i>
+              <a-icon type="mail"></a-icon>
               <span>{{ userDetail.email }}</span>
             </p>
           </div>
-          <a-divider/>
+          <a-divider />
 
           <div class="account-center-tags">
-            <div class="tagsTitle">当前配置
-            </div>
-            <div>
-              <pre>{{ tabs }}</pre>
-            </div>
+            <a-card title="当前展示TAB配置">
+              <a-card-grid
+                v-for="(tab, index) in tabs"
+                :key="index"
+                style="width:25%;textAlign:'center'"
+              >{{ tab.name }}:
+                <a-switch
+                  checkedChildren="显示"
+                  unCheckedChildren="隐藏"
+                  :checked="tabs[index].display"
+                  @change="handleChange(index)"
+                />
+              </a-card-grid>
+            </a-card>
           </div>
-          <a-divider :dashed="true"/>
+          <a-divider :dashed="true" />
         </a-card>
       </a-col>
 
@@ -40,7 +57,7 @@
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { queryUserDetail, queryUserConfig } from '@/api/user'
+import { queryUserDetail, queryGetTabsConfig, saveTabsConfig } from '@/api/user'
 
 export default {
   components: {
@@ -58,24 +75,32 @@ export default {
       },
       // 用户tabs信息
       tabs: [],
-      avatarrr: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
+      avatarrr: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
+      tagColors: ['#1890ff', '#52c41a', '#13c2c2', '#2f54eb', '#722ed1', '#eb2f96']
     }
   },
   mounted () {
-    this.getTeams()
+    // this.getTeams()
   },
   methods: {
+    async getTabsConfig () {
+      const { data: { displayTabs } } = await queryGetTabsConfig()
+      this.tabs = displayTabs
+    },
+
+    handleChange (index) {
+      this.tabs[index].display = !this.tabs[index].display
+      saveTabsConfig({ tabs: this.tabs }).then(res => {
+        console.log(res)
+      })
+    }
   },
   created () {
     queryUserDetail().then(res => {
       this.userDetail = res.data
-      console.log(this.userDetail)
+      // console.log(this.userDetail)
     })
-    queryUserConfig().then(res => {
-      this.tabs = res.data.tabs
-      // this.tabs = JSON.stringify(this.tabs)
-      console.log(this.tabs)
-    })
+    this.getTabsConfig()
   }
 }
 </script>
@@ -126,7 +151,6 @@ export default {
       width: 14px;
       left: 0;
       top: 4px;
-      background: url(https://gw.alipayobjects.com/zos/rmsportal/pBjWzVAHnOOtAUvZmZfy.svg);
     }
 
     .title {

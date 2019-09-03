@@ -248,7 +248,6 @@ export default {
       sourceData[2].count = this.analyzeData.deviceCount.CoAP
       sourceData[3].count = this.analyzeData.deviceCount.HTTP
       sourceData[4].count = this.analyzeData.deviceCount.UDP
-      console.log(this.analyzeData.deviceCount.MQTT.total)
       this.sourceData = sourceData
       this.loading = !this.loading
     })
