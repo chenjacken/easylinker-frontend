@@ -10,11 +10,13 @@
             <div class="avatar">
               <img :src="avatarrr">
             </div>
-            <div class="username">{{ userDetail.principle }}</div>
+            <div class="username">
+              <span>{{ userDetail.principle }}</span>
+            </div>
           </div>
           <div class="account-center-detail">
             <p>
-              <a-icon type="user"></a-icon>{{ userDetail.name }}
+              <a-icon type="user"></a-icon>{{ userDetail.name }}<a style="margin-left: 10px;" @click="editUsername">修改</a>
             </p>
             <p class="roles">
               <a-icon type="tag" />
@@ -22,7 +24,7 @@
                 v-for="(role, index) in userDetail.roles"
                 :key="index"
                 :color="tagColors[index]"
-              >{{ role }}</a-tag>
+              >{{ role.info }}</a-tag>
             </p>
             <p>
               <a-icon type="mail"></a-icon>
@@ -36,7 +38,7 @@
               <a-card-grid
                 v-for="(tab, index) in tabs"
                 :key="index"
-                style="width:25%;textAlign:'center'"
+                style="width:25%;text-align:'center'"
               >{{ tab.name }}:
                 <a-switch
                   checkedChildren="显示"
@@ -52,12 +54,42 @@
       </a-col>
 
     </a-row>
+
+    <!-- 修改用户信息 -->
+    <a-drawer
+      title="更新个人信息"
+      placement="right"
+      :width="540"
+      :maskClosable="false"
+      @close="onClose"
+      :visible="visible"
+    >
+      <a-form :form="userInfo">
+        <a-form-item
+          label="用户名"
+          :label-col="{span: 5}"
+          :wrapper-col="{ span: 19 }"
+        >
+          <a-input v-decorator="['name',{rules:[{required: true, message: '请输入新用户名'}]}]" />
+        </a-form-item>
+      </a-form>
+      <div style="text-align: right">
+        <a-button
+          style="margin-right: 10px"
+          @click="onClose"
+        >取消</a-button>
+        <a-button
+          type="primary"
+          @click="handleSubmit"
+        >保存</a-button>
+      </div>
+    </a-drawer>
   </div>
 </template>
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { queryUserDetail, queryGetTabsConfig, saveTabsConfig } from '@/api/user'
+import { queryUserDetail, queryGetTabsConfig, saveTabsConfig, updateUserInfo } from '@/api/user'
 
 export default {
   components: {
@@ -76,13 +108,21 @@ export default {
       // 用户tabs信息
       tabs: [],
       avatarrr: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
-      tagColors: ['#1890ff', '#52c41a', '#13c2c2', '#2f54eb', '#722ed1', '#eb2f96']
+      tagColors: ['#1890ff', '#52c41a', '#13c2c2', '#2f54eb', '#722ed1', '#eb2f96'],
+      visible: false,
+      userInfo: this.$form.createForm(this)
     }
   },
   mounted () {
     // this.getTeams()
   },
   methods: {
+
+    async getUserDetail () {
+      const { data } = await queryUserDetail()
+      this.userDetail = data
+    },
+
     async getTabsConfig () {
       const { data: { displayTabs } } = await queryGetTabsConfig()
       this.tabs = displayTabs
@@ -93,13 +133,37 @@ export default {
       saveTabsConfig({ tabs: this.tabs }).then(res => {
         console.log(res)
       })
+    },
+
+    editUsername () {
+      this.visible = true
+    },
+
+    /**
+     * 关闭
+     */
+    onClose () {
+      this.userInfo.resetFields()
+      this.visible = false
+    },
+
+    /**
+     * 更新用户信息
+     */
+    handleSubmit (e) {
+      const { userInfo: { validateFields } } = this
+      validateFields((err, values) => {
+        if (!err) {
+          updateUserInfo(values).then(res => {
+            this.getUserDetail()
+            this.onClose()
+          })
+        }
+      })
     }
   },
   created () {
-    queryUserDetail().then(res => {
-      this.userDetail = res.data
-      // console.log(this.userDetail)
-    })
+    this.getUserDetail()
     this.getTabsConfig()
   }
 }

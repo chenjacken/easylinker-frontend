@@ -40,3 +40,15 @@ export function saveTabsConfig (data) {
     data
   })
 }
+
+/**
+ * 更新用户信息
+ * @param {Object} data
+ */
+export function updateUserInfo (data) {
+  return axios({
+    url: 'easyboot/user/update',
+    method: 'put',
+    data
+  })
+}
