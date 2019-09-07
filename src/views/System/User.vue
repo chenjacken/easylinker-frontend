@@ -16,7 +16,10 @@
           </div>
           <div class="account-center-detail">
             <p>
-              <a-icon type="user"></a-icon>{{ userDetail.name }}<a style="margin-left: 10px;" @click="editUsername">修改</a>
+              <a-icon type="user"></a-icon>{{ userDetail.name }}<a
+                style="margin-left: 10px;"
+                @click="editUsername"
+              >修改</a>
             </p>
             <p class="roles">
               <a-icon type="tag" />
@@ -35,18 +38,28 @@
 
           <div class="account-center-tags">
             <a-card title="当前展示TAB配置">
-              <a-card-grid
-                v-for="(tab, index) in tabs"
-                :key="index"
-                style="width:25%;text-align:'center'"
-              >{{ tab.name }}:
-                <a-switch
-                  checkedChildren="显示"
-                  unCheckedChildren="隐藏"
-                  :checked="tabs[index].display"
-                  @change="handleChange(index)"
-                />
-              </a-card-grid>
+              <template v-if="tabs.length>0">
+                <a-card-grid
+                  v-for="(tab, index) in tabs"
+                  :key="index"
+                  style="width:25%;textAlign:'center'"
+                >{{ tab.name }}:
+                  <a-switch
+                    checkedChildren="显示"
+                    unCheckedChildren="隐藏"
+                    :checked="tabs[index].display"
+                    @change="handleChange(index)"
+                  />
+                </a-card-grid>
+              </template>
+              <template v-else>
+                <a-card-grid style="txetAlign: center; width: 100%">
+                  <p style="text-align: center">
+                    <a-icon type="inbox" style="font-size: 64px; color: #d9d9d9"/>
+                  </p>
+                  <p style="text-align: center;color: #d9d9d9">暂无数据</p>
+                </a-card-grid>
+              </template>
             </a-card>
           </div>
           <a-divider :dashed="true" />

@@ -253,7 +253,6 @@ export default {
     })
     querySyslogListByUser(Object.assign(this.queryParam)).then(res => {
       this.analyzeLogMap = res.data.content
-      console.log(this.analyzeLogMap)
       for (let i = 0; i < 6; i++) {
         if (this.analyzeLogMap[i]) {
           this.logList.push({

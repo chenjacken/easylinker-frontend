@@ -1,90 +1,139 @@
 <template>
-  <a-popover
+  <a-dropdown
+    :trigger="['click']"
     v-model="visible"
-    trigger="click"
-    placement="bottomRight"
-    overlayClassName="header-notice-wrapper"
-    :getPopupContainer="() => $refs.noticeRef.parentElement"
-    :autoAdjustOverflow="true"
-    :arrowPointAtCenter="true"
-    :overlayStyle="{ width: '300px', top: '50px' }"
   >
-    <template slot="content">
+    <div
+      slot="overlay"
+      class="header-dropdown-index-container"
+    >
       <a-spin :spinning="loadding">
-        <a-tabs>
-          <a-tab-pane tab="通知" key="1">
-            <a-list>
-              <a-list-item>
-                <a-list-item-meta title="你收到了 14 份新周报" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="你推荐的 曲妮妮 已通过第三轮面试" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="这种模板可以区分多种通知类型" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-tab-pane>
-          <a-tab-pane tab="消息" key="2">
-            123
-          </a-tab-pane>
-          <a-tab-pane tab="待办" key="3">
-            123
-          </a-tab-pane>
-        </a-tabs>
+        <div class="spin-content">
+          <a-tabs
+            :tabBarStyle="{textAlign: 'center', margin: '0'}"
+            :style="{backgroundColor: 'white', width: '336px'}"
+          >
+            <a-tab-pane
+              tab="通知"
+              key="1"
+            >
+              <a-list :dataSource="noticeList">
+                <a-list-item
+                  class="notice-list-item"
+                  slot="renderItem"
+                  slot-scope="item, index"
+                  @click="handleNotice(index)"
+                >
+                  <a-list-item-meta>
+                    <h4 slot="title">{{ item.msgContent }}</h4>
+                    <span
+                      slot="description"
+                      class="notice-item-desc"
+                    >{{ dateformat(item.createTime) }}</span>
+                    <a-avatar
+                      slot="avatar"
+                      src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"
+                    />
+                  </a-list-item-meta>
+                </a-list-item>
+              </a-list>
+            </a-tab-pane>
+          </a-tabs>
+        </div>
       </a-spin>
-    </template>
-    <span @click="fetchNotice" class="header-notice" ref="noticeRef">
-      <a-badge count="12">
-        <a-icon style="font-size: 16px; padding: 4px" type="bell" />
+    </div>
+    <span
+      @click="fetchNotice"
+      class="header-notice"
+      ref="noticeRef"
+    >
+      <a-badge :count="noticeTotal">
+        <a-icon
+          style="font-size: 16px; padding: 4px;vertical-align: middle;"
+          type="bell"
+        />
       </a-badge>
     </span>
-  </a-popover>
+  </a-dropdown>
 </template>
 
 <script>
+import { getNoticeInfo, markRead } from '@/api/notice'
+import { dateFormat } from '@/utils/dateUtils'
 export default {
   name: 'HeaderNotice',
   data () {
     return {
       loadding: false,
-      visible: false
+      visible: false,
+      noticeList: [],
+      noticeTotal: 0
     }
   },
+
+  created () {
+    this.getInfoList()
+  },
+
   methods: {
     fetchNotice () {
       if (!this.visible) {
         this.loadding = true
         setTimeout(() => {
           this.loadding = false
-        }, 2000)
+        }, 1000)
       } else {
         this.loadding = false
       }
       this.visible = !this.visible
+    },
+
+    async getInfoList () {
+      const { data: { content, totalElements } } = await getNoticeInfo()
+      this.noticeList = content
+      this.noticeTotal = totalElements
+    },
+
+    dateformat (time) {
+      return dateFormat('YYYY-mm-dd HH:MM:SS', time)
+    },
+
+    handleNotice (index) {
+      const { securityId } = this.noticeList[index]
+      markRead(securityId).then(res => {
+        this.getInfoList()
+      })
     }
   }
+
 }
 </script>
 
-<style lang="css">
-  .header-notice-wrapper {
-    top: 50px !important;
-  }
-</style>
-<style lang="less" scoped>
-  .header-notice{
-    display: inline-block;
-    transition: all 0.3s;
+<style lang="less" scope>
+.header-notice {
+  display: inline-block;
+  transition: all 0.3s;
 
-    span {
-      vertical-align: initial;
-    }
+  span {
+    vertical-align: initial;
   }
+}
+.header-dropdown-index-container > * {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.notice-list-item {
+  padding: 12px 24px !important;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+  &:hover {
+    background: #e6f7ff;
+  }
+  .notice-item-desc {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
 </style>
