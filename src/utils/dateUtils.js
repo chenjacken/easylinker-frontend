@@ -1,7 +1,7 @@
 /**
  * 日期格式化
- * @param { string } fmt
- * @param { date } timeStamp
+ * @param { String } fmt 格式化格式
+ * @param { String } timeStamp 待格式化时间
  */
 export function dateFormat (fmt, timeStamp) {
   var date = new Date(timeStamp)

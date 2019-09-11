@@ -78,6 +78,24 @@
         ></a-select>
       </a-form-item>
       <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+      >
+        <span slot="label">
+          设备参数&nbsp;
+          <a-tooltip title="What do you want others to call you?">
+            <a-icon type="question-circle-o" />
+          </a-tooltip>
+        </span>
+        <a-select
+          v-decorator="['deviceParam']"
+          mode="tags"
+          style="width: 100%"
+          @change="handleFieldChange"
+          placeholder="输入设备的参数，按回车完成"
+        ></a-select>
+      </a-form-item>
+      <a-form-item
         label="所属场景"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
@@ -115,7 +133,7 @@
         :loading="confirmLoading"
         type="primary"
         @click="handleSubmit"
-      >完成</a-button>
+      >保存</a-button>
     </template>
   </a-modal>
 </template>

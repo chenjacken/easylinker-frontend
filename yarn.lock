@@ -53,10 +53,10 @@
   dependencies:
     "@antv/util" "~1.3.1"
 
-"@antv/data-set@^0.10.1":
+"@antv/data-set@^0.10.2":
   version "0.10.2"
-  resolved "https://registry.npm.taobao.org/@antv/data-set/download/@antv/data-set-0.10.2.tgz#584a9574e7e0853847cb658d51b9f7345a00032f"
-  integrity sha1-WEqVdOfghThHy2WNUbn3NFoAAy8=
+  resolved "https://registry.yarnpkg.com/@antv/data-set/-/data-set-0.10.2.tgz#584a9574e7e0853847cb658d51b9f7345a00032f"
+  integrity sha512-FFWG5tiTiFiUrLDRwulraU5XfOdDjkYOlZna+AMT9FJw406D/gfS8eXM9YibscBH28M/+KLAVO8xEwuD1sc3bw==
   dependencies:
     "@antv/hierarchy" "~0.4.0"
     "@antv/util" "~1.3.1"
@@ -90,6 +90,21 @@
   version "3.5.3"
   resolved "https://registry.npm.taobao.org/@antv/g2/download/@antv/g2-3.5.3.tgz#8451719aac860690b67a409d5fb7b06802c4aca6"
   integrity sha1-hFFxmqyGBpC2ekCdX7ewaALErKY=
+  dependencies:
+    "@antv/adjust" "~0.1.0"
+    "@antv/attr" "~0.1.2"
+    "@antv/component" "~0.3.2"
+    "@antv/coord" "~0.1.0"
+    "@antv/g" "~3.3.6"
+    "@antv/scale" "~0.1.1"
+    "@antv/util" "~1.3.1"
+    venn.js "~0.2.20"
+    wolfy87-eventemitter "~5.1.0"
+
+"@antv/g2@^3.5.7":
+  version "3.5.7"
+  resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-3.5.7.tgz#b562a696546d3ec1baeff820f6be00521004fe94"
+  integrity sha512-/ec6EBbgp+KWeNi37cq2+ly5do/DIFLqpWRhk7uszFQxVtPcofB6h96D2Z48BNZpqshcVHhpmWVLdOwSnpZu1w==
   dependencies:
     "@antv/adjust" "~0.1.0"
     "@antv/attr" "~0.1.2"

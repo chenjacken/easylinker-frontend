@@ -29,7 +29,7 @@
                     <span
                       slot="description"
                       class="notice-item-desc"
-                    >{{ dateformat(item.createTime) }}</span>
+                    >{{ item.createTime | dateformat }}</span>
                     <a-avatar
                       slot="avatar"
                       src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"
@@ -94,15 +94,17 @@ export default {
       this.noticeTotal = totalElements
     },
 
-    dateformat (time) {
-      return dateFormat('YYYY-mm-dd HH:MM:SS', time)
-    },
-
     handleNotice (index) {
       const { securityId } = this.noticeList[index]
       markRead(securityId).then(res => {
         this.getInfoList()
       })
+    }
+
+  },
+  filters: {
+    dateformat (time) {
+      return dateFormat('YYYY-mm-dd HH:MM:SS', time)
     }
   }
 

@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function getNoticeInfo () {
   return axios({
-    url: 'easyboot/message/list?page=1&size=5&messageState=NO_READ',
+    url: 'easyboot/message/list?page=0&size=5&messageState=NO_READ',
     method: 'get'
   })
 }

@@ -29,6 +29,8 @@ import ExceptionPage from '@/components/Exception'
 import StandardFormRow from '@/components/StandardFormRow'
 import ArticleListContent from '@/components/ArticleListContent'
 
+import LineChart from '@/components/G2Chart/LineChart'
+
 export {
   AvatarList,
   Bar,
@@ -58,5 +60,6 @@ export {
   IconSelector,
   TagSelect,
   StandardFormRow,
-  ArticleListContent
+  ArticleListContent,
+  LineChart
 }

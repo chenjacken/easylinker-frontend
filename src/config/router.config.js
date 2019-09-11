@@ -38,14 +38,14 @@ export const asyncRouterMap = [
           },
           {
             path: '/device/list/boolean/:id',
-            name: 'detail',
+            name: 'bdetail',
             hidden: true,
             component: () => import('@/views/Device/List/Detail/Boolean'),
             meta: { title: '布尔设备-详情', keepAlive: true }
           },
           {
             path: '/device/list/text/:id',
-            name: 'detail',
+            name: 'tdetail',
             hidden: true,
             component: () => import('@/views/Device/List/Detail/Text'),
             meta: { title: '文本设备-详情', keepAlive: true }
@@ -65,12 +65,6 @@ export const asyncRouterMap = [
             component: () => import('@/views/Scene/List'),
             meta: { title: '场景列表', keepAlive: true }
           }
-          // {
-          //   path: '/scene/create',
-          //   name: 'sceneCreate',
-          //   component: () => import('@/views/Scene/Create'),
-          //   meta: { title: '创建场景', keepAlive: true }
-          // }
         ]
       },
       {

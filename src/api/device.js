@@ -107,3 +107,13 @@ export function queryProtocolByType (type) {
     method: 'get'
   })
 }
+
+/**
+ * 获取设备数据
+ */
+export function getDeviceData () {
+  return axios({
+    url: `easyboot/deviceData/list?deviceSecurityId=9a7d2b07d32b41b888a84080b0d9de63&deviceType=BOOLEAN&page=0&size=20`,
+    method: 'get'
+  })
+}

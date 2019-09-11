@@ -6,6 +6,7 @@ import user from './modules/user'
 import permission from './modules/permission'
 import scene from './modules/scene'
 import device from './modules/device'
+import globalCode from './modules/globalCode'
 import getters from './getters'
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     user,
     permission,
     scene,
-    device
+    device,
+    globalCode
   },
   state: {},
   mutations: {},
