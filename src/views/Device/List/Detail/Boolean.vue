@@ -48,7 +48,7 @@
       @tabChange="(key) => {this.activeTabKey = key}"
     >
       <s-table
-        rowKey="id"
+        rowKey="securityId"
         ref="operationEchoTable"
         v-show="activeTabKey === '1'"
         :columns="dataColumn"
@@ -158,7 +158,7 @@ export default {
     statusFilter (status) {
       const statusMap = {
         agree: '成功',
-        reject: '驳回'
+        reject: '失败'
       }
       return statusMap[status]
     },

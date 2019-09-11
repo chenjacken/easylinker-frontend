@@ -32,10 +32,10 @@
       @tabChange="(key) => {this.activeTabKey = key}"
     >
       <s-table
-        rowKey="id"
+        rowKey="securityId"
         ref="operationEchoTable"
         v-show="activeTabKey === '1'"
-        :columns="deviceDataColumns"
+        :columns="dataColumn"
         :data="deviceDataDataSource"
         showPagination="auto"
       >
@@ -44,10 +44,10 @@
         </template>
       </s-table>
       <s-table
-        rowKey="id"
+        rowKey="securityId"
         ref="operationTable"
         v-show="activeTabKey === '2'"
-        :columns="deviceOperationColumns"
+        :columns="operateColumn"
         :data="deviceOperateLogDataSource"
         showPagination="auto"
       >
@@ -63,6 +63,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { mixinDevice, mixinMqtt, mixinSelectMap } from '@/utils/mixin'
+import { dataColumn, operateColumn } from '@/model/device/detail'
 import { PageView } from '@/layouts'
 import { STable } from '@/components'
 import DetailList from '@/components/tools/DetailList'
@@ -93,6 +94,8 @@ export default {
     return {
       switch: null,
       queryParam: {},
+      dataColumn,
+      operateColumn,
       tabList: [
         {
           key: '1',
@@ -110,7 +113,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['deviceOperationLogColumns', 'deviceDataColumns', 'sceneSecurityIdMap']),
+    ...mapGetters(['deviceOperationLogColumns', 'sceneSecurityIdMap']),
     ...mapState({
       detail: state => state.device.detail,
       deviceTypeMap: state => state.device.deviceTypeMap,
@@ -122,7 +125,7 @@ export default {
   },
   methods: {
     ...mapActions(['QueryDeviceOperateLogList', 'QueryDeviceDataList']),
-    resetTable () {
+    refreshTable () {
       const { securityId, deviceType } = this.detail
       this.queryParam = { deviceSecurityId: securityId, deviceType }
       this.$refs.operationEchoTable.refresh()

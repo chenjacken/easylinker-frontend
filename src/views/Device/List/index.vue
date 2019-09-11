@@ -122,6 +122,8 @@
             <a @click="handleEdit(record)">配置</a>
             <a-divider type="vertical" />
             <a @click="handleDetail(record)">操作</a>
+            <a-divider type="vertical" />
+            <a @click="handleTerminal(record)">终端</a>
           </template>
         </span>
       </s-table>
