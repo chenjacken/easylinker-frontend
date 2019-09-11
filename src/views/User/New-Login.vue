@@ -125,10 +125,11 @@ export default {
 
   created () {
     this.handleCodeImage()
+    this.GetGlobalCode()
   },
 
   methods: {
-    ...mapActions(['Login', 'Logout']),
+    ...mapActions(['Login', 'Logout', 'GetGlobalCode']),
 
     /**
      * @description

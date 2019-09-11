@@ -35,6 +35,11 @@ const err = error => {
         })
       }
     }
+
+    notification.error({
+      message: error.response.status,
+      description: data
+    })
   }
 
   return Promise.reject(error)
@@ -61,6 +66,13 @@ service.interceptors.response.use(response => {
       setTimeout(() => {
         window.location.reload()
       }, 1000)
+    })
+  }
+  if (code !== 0) {
+    const { msg, value } = store.getters.globalCode(code)
+    notification.error({
+      message: msg,
+      description: value
     })
   }
   return data

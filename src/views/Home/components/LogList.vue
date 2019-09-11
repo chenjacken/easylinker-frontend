@@ -1,23 +1,26 @@
 <template>
   <div class="rank">
     <ul class="list">
-      <li :key="index" v-for="(item, index) in list">
+      <li
+        :key="index"
+        v-for="(item, index) in list"
+      >
         <div class="status">
-          <a-badge status="default"/>
+          <a-badge status="processing" />
         </div>
         <div class="name">
-          <a-tooltip>
-            <template slot="title">{{ item.name }}</template>
-            {{ item.name }}
+          <a-tooltip :title="item.info">
+            {{ item.info }}
           </a-tooltip>
         </div>
-        <div class="date">{{ item.date }}</div>
+        <div class="date">{{ item.createTime | dateformat }}</div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import { dateFormat } from '@/utils/dateUtils'
 export default {
   name: 'RankList',
   props: {
@@ -28,6 +31,11 @@ export default {
     list: {
       type: Array,
       default: null
+    }
+  },
+  filters: {
+    dateformat (time) {
+      return dateFormat('YYYY-mm-dd HH:MM:SS', time)
     }
   }
 }
@@ -49,7 +57,7 @@ export default {
       }
 
       .status {
-        flex:10px 0 0;
+        flex: 10px 0 0;
       }
 
       .name {

@@ -10,6 +10,7 @@ const getters = {
   userInfo: state => state.user.info,
   addRouters: state => state.permission.addRouters,
   multiTab: state => state.app.multiTab,
+  globalCode: state => code => state.globalCode.codeList.find(item => item.code === code),
 
   sceneSecurityIdMap: state => state.scene.list.map(item => ({ name: item.name, key: item.securityId }))
 }
